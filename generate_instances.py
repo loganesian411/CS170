@@ -1,15 +1,15 @@
 import random
+vertices = 100
 
-graph = [[0 for i in xrange(500)] for i in xrange(500)] 
+graph = [[0 for i in xrange(vertices)] for i in xrange(vertices)] 
 
-a = [3, 3, 4, 4, 3, 5, 5, 4, 4, 4, 5, 3, 3, 5, 5, 5, 4, 5, 5, 3, 5, 5, 4, 5, 3, 3, 4, 5, 5, 5, 5, 3, 4, 5, 3, 3, 4, 3, 3, 4, 3, 4, 4, 4, 4, 5, 3, 5, 3, 5, 5, 5, 3, 5, 3, 5, 3, 3, 3, 4, 4, 5, 4, 4, 5, 5, 3, 5, 3, 4, 5, 4, 3, 4, 4, 5, 4, 3, 3, 4, 5, 4, 3, 3, 3, 5, 5, 3, 4, 3, 3, 5, 3, 3, 3, 3, 4, 5, 5, 3, 3, 3, 5, 5, 5, 3, 5, 3, 3, 5, 4, 5, 5, 4, 5, 3, 4, 3, 4, 4, 5, 3, 5, 5, 3]
-
+a = [4, 4, 2, 5, 5, 2, 4, 3, 3, 2, 4, 4, 3, 4, 5, 4, 4, 5, 2, 4, 2, 4, 3, 3, 5, 2, 3, 5]
 b = set()
 
-for i in xrange(500):
+for i in xrange(vertices):
     b.add(i)
 
-output1 = open("sol1.in", "w")
+output1 = open("solSize100.in", "w")
 for cycle in a:
     vertex = random.sample(b, cycle)
     for index in range(0, len(vertex)):
@@ -22,20 +22,20 @@ for cycle in a:
 output1.close()
 
 
-for vertex in xrange(500):
-    for i in xrange(random.randrange(150,250)):
-        x = random.randrange(0,500)
+for vertex in xrange(vertices):
+    for i in xrange(random.randrange(3*vertices/10,vertices/2)):
+        x = random.randrange(0,vertices)
         if x != vertex:
             graph[vertex][x] = 1
 
 
-output = open("BretzelsAndChestnuts1.in", "w")
+output = open("testSize100.in", "w")
 
-output.write("500\n")
+output.write("%d\n" %vertices)
 
 children = []
-for i in xrange(random.randrange(125,325)):
-    rand = random.randrange(0, 500)
+for i in xrange(random.randrange(vertices/4,13*vertices/20)):
+    rand = random.randrange(0, vertices)
     if rand not in children:
         children.append(rand)
 
