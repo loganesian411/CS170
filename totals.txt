@@ -1,1 +1,12 @@
-Total vertices covered: 188 / 200
+Total vertices covered: 10 / 200
+Total vertices covered: 403 / 500
+Total vertices covered: 98 / 100
+Total vertices covered: 429 / 500
+Total vertices covered: 10 / 12
+Total vertices covered: 0 / 200
+Total vertices covered: 10 / 12
+Total vertices covered: 441 / 500
+Total vertices covered: 15 / 15
+Total vertices covered: 3 / 4
+Total vertices covered: 9 / 14
+Total vertices covered: 200 / 500

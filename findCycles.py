@@ -134,8 +134,10 @@ def greedyMethod():
 			answer.append(bestCycle)
 	return answer
 
-for i in xrange(492):
-	current = i+1
+outwriter = open("soln.txt", "w")
+outTotals = open("totals.txt", "w")
+for i in xrange(192):
+	current = i+301
 	source_file = "phase1-processed/%d.in" % current
 	#source_file = "phase1-processed/212.in"
 	print("Starting file: " + source_file)
@@ -158,8 +160,7 @@ for i in xrange(492):
 	total = 0
 	for item in solution:
 		total += len(item)
-	outwriter = open("soln.txt", "w")
-	outTotals = open("totals.txt", "w")
+
 	# if total >= vertices*.1:
 	print "Solution: ", solution
 	totalStr =  "Total vertices covered: %d / %d" %(total, vertices)
@@ -173,7 +174,7 @@ for i in xrange(492):
 	# else:
 	# 	matrix = originalMatrix[:]
 	# 	solution = allCyclesMethod()
-	outwriter.close()
+outwriter.close()
 
 	#print "Solution is: ", solution
 	
