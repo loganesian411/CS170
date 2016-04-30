@@ -136,7 +136,7 @@ def greedyMethod():
 
 outwriter = open("soln.txt", "w")
 outTotals = open("totals.txt", "w")
-for i in range(109, 111):
+for i in xrange(492):
 	current = i+1
 	source_file = "phase1-processed/%d.in" % current
 	#source_file = "phase1-processed/212.in"
