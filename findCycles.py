@@ -1,6 +1,24 @@
 import random
 from copy import copy, deepcopy
 
+<<<<<<< HEAD
+=======
+source_file = "phase1-processed/130.in"
+print("Starting file: " + source_file)
+instance = open(source_file, "r")
+
+vertices = int(instance.readline())
+#kids = instance.readline()
+#kids = []
+kids = map(int, instance.readline().strip().split(" "))
+print kids
+matrix = [[0 for i in xrange(vertices)] for i in xrange(vertices)]
+
+for i in xrange(vertices):
+	matrix[i] = map(int, instance.readline().strip().split(" "))
+originalMatrix = deepcopy(matrix)
+
+>>>>>>> 6966a72d5a2f06a0e7136820e154fc845f008940
 def get_children(v):
 	children = []
 	for child in xrange(vertices):
@@ -68,6 +86,9 @@ def setFlagFalse():
 def checkFlag():
 	return greedyFlag
 
+def getKids():
+	return kids
+
 def greedyExplore(vertex, curr_path, cycles):
 	#print "starting explore for current path " + str(curr_path) + " and vertex %d" %vertex
 	if len(curr_path) > 5 or checkFlag():
@@ -91,10 +112,16 @@ def greedyMethod():
 	print "Starting Greedy Strategy..."
 	nodes = set()
 	answer = []
+	kidDonors = getKids()
 	for i in xrange(vertices):
 		nodes.add(i)
 	while nodes:
-		currNode = random.sample(nodes, 1)[0]
+		if kidDonors:
+			rand = random.randrange(0, len(kidDonors))
+			currNode = kidDonors.pop(rand)
+		else:
+			currNode = random.sample(nodes, 1)[0]
+		#currNode = random.sample(nodes, 1)[0]
 		print "Analyzing node %d" %currNode
 		print "%d out of %d nodes left." %(len(nodes),vertices)
 		cycles = []
@@ -108,6 +135,8 @@ def greedyMethod():
 		else:
 			bestCycle = cycles[-1]
 			for item in bestCycle:
+				if item in kidDonors:
+					kidDonors.remove(item)
 				nodes.remove(item)
 				for i in xrange(vertices):
 					matrix[i][item] = 0

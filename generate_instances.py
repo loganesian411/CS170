@@ -23,7 +23,7 @@ output1.close()
 
 
 for vertex in xrange(vertices):
-    for i in xrange(random.randrange(3*vertices/10,vertices/2)):
+    for i in xrange(random.randrange(vertices/20,vertices/20 + 1)):
         x = random.randrange(0,vertices)
         if x != vertex:
             graph[vertex][x] = 1
