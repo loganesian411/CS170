@@ -1,20 +1,6 @@
 import random
 from copy import copy, deepcopy
 
-source_file = "phase1-processed/10.in"
-print("Starting file: " + source_file)
-instance = open(source_file, "r")
-
-vertices = int(instance.readline())
-kids = instance.readline()
-# kids = []
-# kids = map(int, instance.readline().strip().split(" "))
-matrix = [[0 for i in xrange(vertices)] for i in xrange(vertices)]
-
-for i in xrange(vertices):
-	matrix[i] = map(int, instance.readline().strip().split(" "))
-originalMatrix = deepcopy(matrix)
-
 def get_children(v):
 	children = []
 	for child in xrange(vertices):
@@ -128,12 +114,38 @@ def greedyMethod():
 			answer.append(bestCycle)
 	return answer
 
-solution = greedyMethod()
-total = 0
-for item in solution:
-	total += len(item)
-print "Solution is: ", solution
-print "Total vertices covered: ", total, "/ %d" %vertices
-checkValid(solution)
+for i in xrange(1):
+	current = 472
+	source_file = "phase1-processed/%d.in" % current
+	print("Starting file: " + source_file)
+	instance = open(source_file, "r")
+
+	vertices = int(instance.readline())
+	kids = instance.readline()
+	# kids = []
+	# kids = map(int, instance.readline().strip().split(" "))
+	matrix = [[0 for i in xrange(vertices)] for i in xrange(vertices)]
+
+	for i in xrange(vertices):
+		matrix[i] = map(int, instance.readline().strip().split(" "))
+	originalMatrix = deepcopy(matrix)
+
+	solution = greedyMethod()
+	total = 0
+	for item in solution:
+		total += len(item)
+	outwriter = open("soln.txt", "w")
+	if total == vertices:
+		for item in answer:
+			printline = str(item).replace(",","").replace("[","").replace("]","") + "; "
+		printline = printline[:-2]
+		outwriter.write(printline + "\n")
+	else:
+		outwriter.write("\n")
+	outwriter.close()
+
+	#print "Solution is: ", solution
+	#print "Total vertices covered: ", total, "/ %d" %vertices
+	#checkValid(solution)
 #allCyclesMethod()
 
