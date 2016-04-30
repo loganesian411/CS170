@@ -16,9 +16,6 @@ def rotate_lowest(l):
 		l = l[-1:] + l[:-1]
 	return l
 
-
-
-
 def explore(vertex, curr_path, cycles):
 	#print "starting explore:", vertex, curr_path, cycles
 	if len(curr_path) > 5:
@@ -59,9 +56,11 @@ def checkValid(soln):
 			if i == len(item)-1:
 				if originalMatrix[item[i]][item[0]] != 1:
 					print "error2: ", item
+					return False
 			else:
 				if originalMatrix[item[i]][item[i+1]] != 1:
 					print "error1: ", item
+					return False
 
 greedyFlag = False
 
@@ -79,24 +78,27 @@ def checkFlag():
 def getKids():
 	return kids
 
-def greedyExplore(vertex, curr_path, cycles):
+def greedyExplore(s, start_path, cycles):
 	#print "starting explore for current path " + str(curr_path) + " and vertex %d" %vertex
-	if len(curr_path) > 5 or checkFlag():
-		return
-	if vertex == curr_path[0]:
-		curr_path = rotate_lowest(curr_path)
-		if curr_path not in cycles:
-			cycles.append(curr_path[:])
-			setFlagTrue()
-		return
-	if vertex in curr_path:
-		return
-	children = get_children(vertex)
-	for child in children:
-		#print "finding children of vertex:", vertex, child
-		curr_path2 = curr_path[:]
-		curr_path2.append(vertex)
-		greedyExplore(child, curr_path2, cycles)
+	stack = [(s, start_path)]
+	while stack:
+		vertex, curr_path = stack.pop()
+		if len(curr_path) > 5:
+			continue
+		if len(curr_path) != 0:
+			if vertex == curr_path[0]:
+				curr_path = rotate_lowest(curr_path)
+				if curr_path not in cycles:
+					cycles.append(curr_path)
+				break
+			if vertex in curr_path:
+				continue
+		children = get_children(vertex)
+		for child in children:
+			#print "finding children of vertex:", vertex, child
+			curr_path2 = curr_path[:]
+			curr_path2.append(vertex)
+			stack.append((child, curr_path2))
 
 def greedyMethod():
 	print "Starting Greedy Strategy..."
@@ -116,27 +118,26 @@ def greedyMethod():
 		print "%d out of %d nodes left." %(len(nodes),vertices)
 		cycles = []
 		for child in get_children(currNode):
-			curr_path = [currNode]
-			setFlagFalse()
-			greedyExplore(child, curr_path[:], cycles)
+			curr_path = []
+			greedyExplore(child, curr_path, cycles)
 		cycles = sorted(cycles, key = len)
 		if len(cycles) == 0:
 			nodes.remove(currNode)
 		else:
 			bestCycle = cycles[-1]
 			for item in bestCycle:
-				if item in kidDonors:
-					kidDonors.remove(item)
+				# if item in kidDonors:
+				# 	kidDonors.remove(item)
 				nodes.remove(item)
 				for i in xrange(vertices):
 					matrix[i][item] = 0
 			answer.append(bestCycle)
 	return answer
 
-for i in xrange(1):
+for i in xrange(492):
 	current = i+1
-	#source_file = "phase1-processed/%d.in" % current
-	source_file = "phase1-processed/109.in"
+	source_file = "phase1-processed/%d.in" % current
+	#source_file = "phase1-processed/212.in"
 	print("Starting file: " + source_file)
 	instance = open(source_file, "r")
 
@@ -151,24 +152,31 @@ for i in xrange(1):
 	originalMatrix = deepcopy(matrix)
 
 	solution = greedyMethod()
+	if checkValid(solution) == False:
+		print "Broke at " + str(i)
+		break
 	total = 0
 	for item in solution:
 		total += len(item)
 	outwriter = open("soln.txt", "w")
-	if total >= vertices*.85:
-		print "Solution: ", solution
-		printline = ""
-		for item in solution:
-			printline += str(item).replace(",","").replace("[","").replace("]","") + "; "
-		printline = printline[:-2]
-		outwriter.write(printline + "\n")
-	else:
-		matrix = originalMatrix[:]
-		solution = allCyclesMethod()
+	outTotals = open("totals.txt", "w")
+	# if total >= vertices*.1:
+	print "Solution: ", solution
+	totalStr =  "Total vertices covered: %d / %d" %(total, vertices)
+	print totalStr
+	outTotals.write(totalStr + "\n")
+	printline = ""
+	for item in solution:
+		printline += str(item).replace(",","").replace("[","").replace("]","") + "; "
+	printline = printline[:-2]
+	outwriter.write(printline + "\n")
+	# else:
+	# 	matrix = originalMatrix[:]
+	# 	solution = allCyclesMethod()
 	outwriter.close()
 
 	#print "Solution is: ", solution
-	#print "Total vertices covered: ", total, "/ %d" %vertices
+	
 	#checkValid(solution)
 #allCyclesMethod()
 
