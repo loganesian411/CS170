@@ -136,6 +136,7 @@ def greedyMethod():
 
 outwriter = open("soln.txt", "w")
 outTotals = open("totals.txt", "w")
+outCheck = open("checker.txt", "w")
 for i in xrange(492):
 	current = i+1
 	source_file = "phase1-processed/%d.in" % current
@@ -170,12 +171,15 @@ for i in xrange(492):
 		printline += str(item).replace(",","").replace("[","").replace("]","") + "; "
 	printline = printline[:-2]
 	outwriter.write(printline + "\n")
+	outCheck.write("(Instance %d) " %current + str(printline) + "\n")
 	# else:
 	# 	matrix = originalMatrix[:]
 	# 	solution = allCyclesMethod()
 
 	#print "Solution is: ", solution
 outwriter.close()
+outCheck.close()
+outTotals.close()
 	
 	#checkValid(solution)
 #allCyclesMethod()
