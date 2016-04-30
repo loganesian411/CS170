@@ -1,7 +1,7 @@
 import random
 from copy import copy, deepcopy
 
-source_file = "phase1-processed/130.in"
+source_file = "phase1-processed/109.in"
 print("Starting file: " + source_file)
 instance = open(source_file, "r")
 
@@ -39,8 +39,14 @@ def explore(vertex, curr_path, cycles):
 		return
 	if vertex == curr_path[0]:
 		curr_path = rotate_lowest(curr_path)
-		if curr_path not in cycles:
-			cycles.append(curr_path[:])
+		cost = 0
+		for item in curr_path:
+			if item in getKids():
+				cost += 2
+			else:
+				cost += 1
+		if (curr_path,cost) not in cycles:
+			cycles.append((curr_path[:], cost))
 		return
 	if vertex in curr_path:
 		return
@@ -58,7 +64,7 @@ def allCyclesMethod():
 			explore(child, curr_path[:], cycles)
 
 
-	print cycles
+	return cycles
 
 def checkValid(soln):
 	for item in soln:
@@ -140,12 +146,15 @@ def greedyMethod():
 			answer.append(bestCycle)
 	return answer
 
-solution = greedyMethod()
+#solution = greedyMethod()
+solution = allCyclesMethod()
 total = 0
 for item in solution:
-	total += len(item)
+	total += len(item[0])
 print "Solution is: ", solution
 print "Total vertices covered: ", total, "/ %d" %vertices
-checkValid(solution)
-#allCyclesMethod()
+#checkValid(solution)
+
+
+
 
