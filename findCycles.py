@@ -1,20 +1,6 @@
 import random
 from copy import copy, deepcopy
 
-source_file = "phase1-processed/109.in"
-print("Starting file: " + source_file)
-instance = open(source_file, "r")
-
-vertices = int(instance.readline())
-#kids = instance.readline()
-#kids = []
-kids = map(int, instance.readline().strip().split(" "))
-print kids
-matrix = [[0 for i in xrange(vertices)] for i in xrange(vertices)]
-
-for i in xrange(vertices):
-	matrix[i] = map(int, instance.readline().strip().split(" "))
-originalMatrix = deepcopy(matrix)
 
 def get_children(v):
 	children = []
@@ -57,13 +43,14 @@ def explore(vertex, curr_path, cycles):
 		explore(child, curr_path2, cycles)
 
 def allCyclesMethod():
+	print "Starting All Cycles ..."
 	cycles = []
 	for vertex in xrange(vertices): # for each vertex
 		for child in get_children(vertex):
 			curr_path = [vertex]
 			explore(child, curr_path[:], cycles)
 
-
+	print cycles
 	return cycles
 
 def checkValid(soln):
@@ -119,12 +106,12 @@ def greedyMethod():
 	for i in xrange(vertices):
 		nodes.add(i)
 	while nodes:
-		if kidDonors:
-			rand = random.randrange(0, len(kidDonors))
-			currNode = kidDonors.pop(rand)
-		else:
-			currNode = random.sample(nodes, 1)[0]
-		#currNode = random.sample(nodes, 1)[0]
+		#if kidDonors:
+		#	rand = random.randrange(0, len(kidDonors))
+		#	currNode = kidDonors.pop(rand)
+		#else:
+		#	currNode = random.sample(nodes, 1)[0]
+		currNode = random.sample(nodes, 1)[0]
 		print "Analyzing node %d" %currNode
 		print "%d out of %d nodes left." %(len(nodes),vertices)
 		cycles = []
@@ -146,15 +133,42 @@ def greedyMethod():
 			answer.append(bestCycle)
 	return answer
 
-#solution = greedyMethod()
-solution = allCyclesMethod()
-total = 0
-for item in solution:
-	total += len(item[0])
-print "Solution is: ", solution
-print "Total vertices covered: ", total, "/ %d" %vertices
-#checkValid(solution)
+for i in xrange(1):
+	current = i+1
+	#source_file = "phase1-processed/%d.in" % current
+	source_file = "phase1-processed/109.in"
+	print("Starting file: " + source_file)
+	instance = open(source_file, "r")
 
+	vertices = int(instance.readline())
+	# kids = instance.readline()
+	# kids = []
+	kids = map(int, instance.readline().strip().split(" "))
+	matrix = [[0 for i in xrange(vertices)] for i in xrange(vertices)]
 
+	for i in xrange(vertices):
+		matrix[i] = map(int, instance.readline().strip().split(" "))
+	originalMatrix = deepcopy(matrix)
 
+	solution = greedyMethod()
+	total = 0
+	for item in solution:
+		total += len(item)
+	outwriter = open("soln.txt", "w")
+	if total >= vertices*.85:
+		print "Solution: ", solution
+		printline = ""
+		for item in solution:
+			printline += str(item).replace(",","").replace("[","").replace("]","") + "; "
+		printline = printline[:-2]
+		outwriter.write(printline + "\n")
+	else:
+		matrix = originalMatrix[:]
+		solution = allCyclesMethod()
+	outwriter.close()
+
+	#print "Solution is: ", solution
+	#print "Total vertices covered: ", total, "/ %d" %vertices
+	#checkValid(solution)
+#allCyclesMethod()
 
