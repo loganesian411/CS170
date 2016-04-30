@@ -1,24 +1,6 @@
 import random
 from copy import copy, deepcopy
 
-<<<<<<< HEAD
-=======
-source_file = "phase1-processed/130.in"
-print("Starting file: " + source_file)
-instance = open(source_file, "r")
-
-vertices = int(instance.readline())
-#kids = instance.readline()
-#kids = []
-kids = map(int, instance.readline().strip().split(" "))
-print kids
-matrix = [[0 for i in xrange(vertices)] for i in xrange(vertices)]
-
-for i in xrange(vertices):
-	matrix[i] = map(int, instance.readline().strip().split(" "))
-originalMatrix = deepcopy(matrix)
-
->>>>>>> 6966a72d5a2f06a0e7136820e154fc845f008940
 def get_children(v):
 	children = []
 	for child in xrange(vertices):
@@ -116,12 +98,12 @@ def greedyMethod():
 	for i in xrange(vertices):
 		nodes.add(i)
 	while nodes:
-		if kidDonors:
-			rand = random.randrange(0, len(kidDonors))
-			currNode = kidDonors.pop(rand)
-		else:
-			currNode = random.sample(nodes, 1)[0]
-		#currNode = random.sample(nodes, 1)[0]
+		#if kidDonors:
+		#	rand = random.randrange(0, len(kidDonors))
+		#	currNode = kidDonors.pop(rand)
+		#else:
+		#	currNode = random.sample(nodes, 1)[0]
+		currNode = random.sample(nodes, 1)[0]
 		print "Analyzing node %d" %currNode
 		print "%d out of %d nodes left." %(len(nodes),vertices)
 		cycles = []
@@ -143,16 +125,16 @@ def greedyMethod():
 			answer.append(bestCycle)
 	return answer
 
-for i in xrange(1):
-	current = 472
+for i in xrange(492):
+	current = i+1
 	source_file = "phase1-processed/%d.in" % current
 	print("Starting file: " + source_file)
 	instance = open(source_file, "r")
 
 	vertices = int(instance.readline())
-	kids = instance.readline()
+	# kids = instance.readline()
 	# kids = []
-	# kids = map(int, instance.readline().strip().split(" "))
+	kids = map(int, instance.readline().strip().split(" "))
 	matrix = [[0 for i in xrange(vertices)] for i in xrange(vertices)]
 
 	for i in xrange(vertices):
@@ -164,9 +146,11 @@ for i in xrange(1):
 	for item in solution:
 		total += len(item)
 	outwriter = open("soln.txt", "w")
-	if total == vertices:
-		for item in answer:
-			printline = str(item).replace(",","").replace("[","").replace("]","") + "; "
+	if total >= vertices*.95:
+		print "Solution: ", solution
+		printline = ""
+		for item in solution:
+			printline += str(item).replace(",","").replace("[","").replace("]","") + "; "
 		printline = printline[:-2]
 		outwriter.write(printline + "\n")
 	else:
