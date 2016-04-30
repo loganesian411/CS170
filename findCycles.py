@@ -134,6 +134,8 @@ def greedyMethod():
 			answer.append(bestCycle)
 	return answer
 
+outwriter = open("soln.txt", "w")
+outTotals = open("totals.txt", "w")
 for i in xrange(492):
 	current = i+1
 	source_file = "phase1-processed/%d.in" % current
@@ -158,8 +160,6 @@ for i in xrange(492):
 	total = 0
 	for item in solution:
 		total += len(item)
-	outwriter = open("soln.txt", "w")
-	outTotals = open("totals.txt", "w")
 	# if total >= vertices*.1:
 	print "Solution: ", solution
 	totalStr =  "Total vertices covered: %d / %d" %(total, vertices)
