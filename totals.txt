@@ -1,2 +1,0 @@
-Total vertices covered: 77 / 181
-Total vertices covered: 78 / 169
