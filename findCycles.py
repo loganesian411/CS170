@@ -137,7 +137,7 @@ def greedyMethod():
 outwriter = open("soln.txt", "w")
 outTotals = open("totals.txt", "w")
 outCheck = open("checker.txt", "w")
-for i in xrange(492):
+for i in range(200, 300):
 	current = i+1
 	source_file = "phase1-processed/%d.in" % current
 	#source_file = "phase1-processed/212.in"
@@ -145,9 +145,9 @@ for i in xrange(492):
 	instance = open(source_file, "r")
 
 	vertices = int(instance.readline())
-	# kids = instance.readline()
+	kids = instance.readline()
 	# kids = []
-	kids = map(int, instance.readline().strip().split(" "))
+	#kids = map(int, instance.readline().strip().split(" "))
 	matrix = [[0 for i in xrange(vertices)] for i in xrange(vertices)]
 
 	for i in xrange(vertices):
