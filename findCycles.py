@@ -94,10 +94,10 @@ def greedyExplore(s, start_path, cycles):
 			if vertex in curr_path:
 				continue
 		children = get_children(vertex)
+		curr_path2 = curr_path[:]
+		curr_path2.append(vertex)
 		for child in children:
 			#print "finding children of vertex:", vertex, child
-			curr_path2 = curr_path[:]
-			curr_path2.append(vertex)
 			stack.append((child, curr_path2))
 
 def greedyMethod():
@@ -121,6 +121,7 @@ def greedyMethod():
 			curr_path = []
 			greedyExplore(child, curr_path, cycles)
 		cycles = sorted(cycles, key = len)
+		print "Cycle length: ", len(cycles), cycles
 		if len(cycles) == 0:
 			nodes.remove(currNode)
 		else:
@@ -136,8 +137,9 @@ def greedyMethod():
 
 outwriter = open("soln.txt", "w")
 outTotals = open("totals.txt", "w")
-for i in xrange(192):
-	current = i+301
+outCheck = open("checker.txt", "w")
+for i in xrange(1):
+	current = i+7
 	source_file = "phase1-processed/%d.in" % current
 	#source_file = "phase1-processed/212.in"
 	print("Starting file: " + source_file)
@@ -171,12 +173,16 @@ for i in xrange(192):
 		printline += str(item).replace(",","").replace("[","").replace("]","") + "; "
 	printline = printline[:-2]
 	outwriter.write(printline + "\n")
+	outCheck.write("(Instance %d) " %current + str(printline) + "\n")
 	# else:
 	# 	matrix = originalMatrix[:]
 	# 	solution = allCyclesMethod()
 outwriter.close()
 
 	#print "Solution is: ", solution
+outwriter.close()
+outCheck.close()
+outTotals.close()
 	
 	#checkValid(solution)
 #allCyclesMethod()
