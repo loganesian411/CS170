@@ -112,7 +112,7 @@ def greedyMethod(vertexQ):
 outwriter = open("soln.txt", "w")
 outTotals = open("totals.txt", "w")
 outCheck = open("checker.txt", "w")
-for i in xrange(492):
+for i in xrange(1):
 	current = i+1
 	removed = set()
 	source_file = "phase1-processed/%d.in" % current
@@ -147,7 +147,11 @@ for i in xrange(492):
 
 	# if total >= vertices*.1:
 	print "Solution: ", solution
-	totalStr =  "Total vertices covered: %d / %d" %(total, vertices)
+	edges = 0
+	for row in xrange(len(originalMatrix)):
+		for col in xrange(len(originalMatrix[0])):
+			edges += originalMatrix[row][col]
+	totalStr =  "Total vertices covered: %d / %d, Number of edges: %d" %(total, vertices, edges)
 	print totalStr
 	outTotals.write(totalStr + "\n")
 	printline = ""
