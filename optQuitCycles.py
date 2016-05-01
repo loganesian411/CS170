@@ -142,9 +142,9 @@ def greedyMethod(vertexQ):
 			answer.append(bestCycle)
 	return answer
 
-outwriter = open("soln2.txt", "w")
-outTotals = open("totals2.txt", "w")
-outCheck = open("checker2.txt", "w")
+outwriter = open("solutions.out", "w")
+outTotals = open("totals.out", "w")
+outCheck = open("checker.out", "w")
 for i in xrange(492):
 	current = i+1
 	t_start = time.time()
@@ -196,7 +196,7 @@ for i in xrange(492):
 		for item in solution:
 			printline += str(item).replace(",","").replace("[","").replace("]","") + "; "
 	else:
-		printline = "None"
+		printline = "None  "
 	printline = printline[:-2]
 	outwriter.write(printline + "\n")
 	outCheck.write("(Instance %d) " %current + str(printline) + "\n")
