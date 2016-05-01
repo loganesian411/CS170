@@ -134,10 +134,10 @@ def greedyMethod():
 			answer.append(bestCycle)
 	return answer
 
-outwriter = open("soln.txt", "w")
-outTotals = open("totals.txt", "w")
-outCheck = open("checker.txt", "w")
-for i in range(200, 300):
+for i in range(268, 300):
+	# outwriter = open("soln.txt", "a")
+	# outTotals = open("totals.txt", "a")
+	# outCheck = open("checker.txt", "a")
 	current = i+1
 	source_file = "phase1-processed/%d.in" % current
 	#source_file = "phase1-processed/212.in"
@@ -146,7 +146,7 @@ for i in range(200, 300):
 
 	vertices = int(instance.readline())
 	kids = instance.readline()
-	# kids = []
+	#kids = []
 	#kids = map(int, instance.readline().strip().split(" "))
 	matrix = [[0 for i in xrange(vertices)] for i in xrange(vertices)]
 
@@ -165,22 +165,17 @@ for i in range(200, 300):
 	print "Solution: ", solution
 	totalStr =  "Total vertices covered: %d / %d" %(total, vertices)
 	print totalStr
-	outTotals.write(totalStr + "\n")
+	#outTotals.write(totalStr + "\n")
 	printline = ""
 	for item in solution:
 		printline += str(item).replace(",","").replace("[","").replace("]","") + "; "
 	printline = printline[:-2]
-	outwriter.write(printline + "\n")
-	outCheck.write("(Instance %d) " %current + str(printline) + "\n")
-	# else:
-	# 	matrix = originalMatrix[:]
-	# 	solution = allCyclesMethod()
+	#outwriter.write(printline + "\n")
+	#outCheck.write("(Instance %d) " %current + str(printline) + "\n")
 
-	#print "Solution is: ", solution
-outwriter.close()
-outCheck.close()
-outTotals.close()
+	# outwriter.close()
+	# outCheck.close()
+	# outTotals.close()
 	
 	#checkValid(solution)
-#allCyclesMethod()
 
