@@ -1,6 +1,7 @@
 import random
 from copy import copy, deepcopy
 import Queue
+import time
 
 BRANCHING_FACTOR = 5
 removed = set()
@@ -48,10 +49,11 @@ def checkValid(soln):
 def getKids():
 	return kids
 
-def greedyExplore(s, start_path, cycles):
+def greedyExplore(s, start_path, cycles, t_end):
 	#print "starting explore for current path " + str(curr_path) + " and vertex %d" %vertex
 	q = Queue.PriorityQueue()
 	q.put((0, s, start_path))
+
 	while not q.empty() and len(cycles) == 0:
 		length, vertex, curr_path = q.get()
 		length = -length
@@ -66,15 +68,46 @@ def greedyExplore(s, start_path, cycles):
 		if length == 5:
 			continue
 		#print("Looking up children for vertex %d" % vertex)
-		children = get_some_children(vertex)
+		if time.time() < t_end:
+			children = get_children(vertex)
+
+		else:
+			children = get_some_children(vertex)
 		curr_path2 = curr_path[:]
 		curr_path2.append(vertex)
 		for child in children:
 			#print "finding children of vertex:", vertex, child
 			q.put((-length - 1, child, curr_path2))
 
+
+def findSoln(originalMatrix, vertices):
+	global removed
+	removed = set()
+	matrix = deepcopy(originalMatrix)
+
+	vertexQ = Queue.PriorityQueue()
+	for i in xrange(vertices):
+		childList = get_children(i)
+		vertexQ.put((len(childList), i))
+
+	solution = greedyMethod(vertexQ)
+	score = 0
+	for cycle in solution:
+		for vert in cycle:
+			if vert in kids:
+				score += 2
+			else:
+				score += 1
+
+	total = 0
+	for item in solution:
+		total += len(item)
+
+	return (score, total, solution)
+
 def greedyMethod(vertexQ):
 	print "Starting Greedy Strategy..."
+	t_end = time.time() + 60 * 1
 	global removed
 	answer = []
 	kidDonors = getKids()
@@ -93,7 +126,7 @@ def greedyMethod(vertexQ):
 		cycles = []
 		for child in get_some_children(currNode):
 			curr_path = []
-			greedyExplore(child, curr_path, cycles)
+			greedyExplore(child, curr_path, cycles, t_end)
 		cycles = sorted(cycles, key = len)
 		#print "Explore returned ", cycles, " with list length: %d" % len(cycles)
 		if len(cycles) == 0:
@@ -109,12 +142,12 @@ def greedyMethod(vertexQ):
 			answer.append(bestCycle)
 	return answer
 
-outwriter = open("soln.txt", "w")
-outTotals = open("totals.txt", "w")
-outCheck = open("checker.txt", "w")
-for i in xrange(1):
+outwriter = open("soln2.txt", "w")
+outTotals = open("totals2.txt", "w")
+outCheck = open("checker2.txt", "w")
+for i in xrange(492):
 	current = i+1
-	removed = set()
+	t_start = time.time()
 	source_file = "phase1-processed/%d.in" % current
 	#source_file = "phase1-processed/212.in"
 	print("Starting file: " + source_file)
@@ -125,25 +158,29 @@ for i in xrange(1):
 	kids = []
 	if childLine not in ('\n', '\r\n'):
 		kids = map(int, childLine.strip().split(" "))
+
+	removed = set()
 	matrix = [[0 for i in xrange(vertices)] for i in xrange(vertices)]
 
 	for i in xrange(vertices):
 		matrix[i] = map(int, instance.readline().strip().split(" "))
 	originalMatrix = deepcopy(matrix)
 
-	vertexQ = Queue.PriorityQueue()
-	for i in xrange(vertices):
-		childList = get_children(i)
-		vertexQ.put((len(childList), i))
+	score, total, solution = findSoln(originalMatrix, vertices)
 
-	solution = greedyMethod(vertexQ)
+	if time.time() < t_start + 1 and total != vertices:
+		for i in xrange(3):
+			newscore, newtotal, newsolution = findSoln(originalMatrix, vertices)
+			if newscore > score:
+				score = newscore
+				total = newtotal
+				solution = newsolution
+
 
 	if checkValid(solution) == False:
 		print "Broke at " + str(i)
 		break
-	total = 0
-	for item in solution:
-		total += len(item)
+
 
 	# if total >= vertices*.1:
 	print "Solution: ", solution
@@ -151,12 +188,15 @@ for i in xrange(1):
 	for row in xrange(len(originalMatrix)):
 		for col in xrange(len(originalMatrix[0])):
 			edges += originalMatrix[row][col]
-	totalStr =  "Total vertices covered: %d / %d, Number of edges: %d" %(total, vertices, edges)
+	totalStr =  "Total vertices covered: %d / %d for a score of %d, Number of edges: %d" %(total, vertices, score, edges)
 	print totalStr
 	outTotals.write(totalStr + "\n")
 	printline = ""
-	for item in solution:
-		printline += str(item).replace(",","").replace("[","").replace("]","") + "; "
+	if solution:
+		for item in solution:
+			printline += str(item).replace(",","").replace("[","").replace("]","") + "; "
+	else:
+		printline = "None"
 	printline = printline[:-2]
 	outwriter.write(printline + "\n")
 	outCheck.write("(Instance %d) " %current + str(printline) + "\n")
