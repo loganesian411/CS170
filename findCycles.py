@@ -139,7 +139,7 @@ outwriter = open("soln.txt", "w")
 outTotals = open("totals.txt", "w")
 outCheck = open("checker.txt", "w")
 for i in xrange(1):
-	current = i+7
+	current = i+344
 	source_file = "phase1-processed/%d.in" % current
 	#source_file = "phase1-processed/212.in"
 	print("Starting file: " + source_file)

@@ -2,7 +2,7 @@ import random
 from copy import copy, deepcopy
 import Queue
 
-BRANCHING_FACTOR = 2
+BRANCHING_FACTOR = 5
 removed = set()
 
 def get_children(v):
@@ -66,7 +66,7 @@ def greedyExplore(s, start_path, cycles):
 		if length == 5:
 			continue
 		#print("Looking up children for vertex %d" % vertex)
-		children = get_children(vertex)
+		children = get_some_children(vertex)
 		curr_path2 = curr_path[:]
 		curr_path2.append(vertex)
 		for child in children:
@@ -95,7 +95,7 @@ def greedyMethod(vertexQ):
 			curr_path = []
 			greedyExplore(child, curr_path, cycles)
 		cycles = sorted(cycles, key = len)
-		print "Explore returned ", cycles, " with list length: %d" % len(cycles)
+		#print "Explore returned ", cycles, " with list length: %d" % len(cycles)
 		if len(cycles) == 0:
 			removed.add(currNode)
 		else:
@@ -112,17 +112,19 @@ def greedyMethod(vertexQ):
 outwriter = open("soln.txt", "w")
 outTotals = open("totals.txt", "w")
 outCheck = open("checker.txt", "w")
-for i in xrange(1):
-	current = i+12
+for i in xrange(492):
+	current = i+1
+	removed = set()
 	source_file = "phase1-processed/%d.in" % current
 	#source_file = "phase1-processed/212.in"
 	print("Starting file: " + source_file)
 	instance = open(source_file, "r")
 
 	vertices = int(instance.readline())
-	# kids = instance.readline()
-	# kids = []
-	kids = map(int, instance.readline().strip().split(" "))
+	childLine = instance.readline()
+	kids = []
+	if childLine not in ('\n', '\r\n'):
+		kids = map(int, childLine.strip().split(" "))
 	matrix = [[0 for i in xrange(vertices)] for i in xrange(vertices)]
 
 	for i in xrange(vertices):
