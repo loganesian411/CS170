@@ -6,17 +6,19 @@ BRANCHING_FACTOR = 2
 removed = set()
 
 def get_children(v):
+	global removed
 	children = []
 	for child in xrange(vertices):
-		if matrix[v][child] == 1: 
+		if child not in removed and matrix[v][child] == 1:
 			children.append(child)
 	#print "Children found for %d." %v
 	return children
 
 def get_some_children(v):
+	global removed
 	children = []
 	for child in xrange(vertices):
-		if matrix[v][child] == 1: 
+		if child not in removed and matrix[v][child] == 1: 
 			children.append(child)
 	#print "Children found for %d." %v
 	global BRANCHING_FACTOR
