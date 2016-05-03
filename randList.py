@@ -2,8 +2,8 @@ import random
 
 a = []
 
-while sum(a) < 500:
-    a.append(random.randrange(3,6))
+while sum(a) < 100:
+    a.append(random.randrange(2,6))
 
 a = a[:-1]
 
