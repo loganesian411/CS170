@@ -6,7 +6,8 @@ from collections import Counter
 
 # source_file = "phase1-processed/10.in"
 # source_file = "phase1-processed/344.in"
-source_file = "phase1-processed/112.in"
+# source_file = "phase1-processed/112.in"
+source_file = "phase1-processed/102.in"
 # source_file = 'phase1-processed/119.in'
 
 print("Starting file: " + source_file)
@@ -119,7 +120,7 @@ def exploreRandom(vertex, curr_path, cycles, maxCycles, fracVert, numFound):
 
 ### UPDATED RANDOMIZED BFS ######
 
-def allCyclesMethodRandomizedBFS(fracVert=0.15, maxCycles=20):
+def allCyclesMethodRandomizedBFS(fracVert=0.5, maxCycles=20):
 	cycles = defaultdict(list)
 	numFound = Counter()
 	visited = set()
